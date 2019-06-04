@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load staticfiles %}    
+
+<html style="overflow: hidden;"> 
+    
+
+  <head>
+     
+  </head>
+    
+<style>
+    
+</style>
+
+    
+    
+<body>
+
+<!-- Bokeh-1  Starts==========dc_bokeh_tukey_boxplot_large======================================== -->
+
+<div>
+        {% load static %}
+        <link rel='stylesheet' href={{cdn_css|safe}} type="text/css"/>
+        <script type="text/javascript" src={{cdn_js|safe}}></script>
+</div>
+<div>
+       {{div_bokeh|safe}}
+       {{js_bokeh|safe}}
+</div>
+<!-- Bokeh-1 Ends ================================================== -->
+    
+<!-- DONT Change Anything Below here   -->                                        
+   
+      
+  </body>
+</html>

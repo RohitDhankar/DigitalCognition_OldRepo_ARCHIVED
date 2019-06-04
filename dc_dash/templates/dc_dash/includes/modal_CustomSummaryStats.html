@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load staticfiles %}    
+
+
+<head>
+</head>
+
+<style>
+
+
+.modal_backDrop_CustomSummaryStats{
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  /* top:50%;
+  left:50%; */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto;
+  border-radius: 10px;
+   /* Enable scroll if needed */
+  background-color: rgba(230, 46, 14, 0.1); /* Color and  opacity */
+}
+
+
+
+/* modal_bokeh_3_LargeHeader */
+.modal_CustomSummaryStats_Header{
+  padding: 8px 16px;
+  /* padding is distance between HEADER border and TEXT  */
+  /* First padding value for TOP and BOTTOM , Second padding value for LEFT and RIGHT */
+  width: 700px; 
+  /* width has to be same as == modal_bokeh_3_LargeContent */
+  height: 70px;
+  font-size: 15px;
+  background-color: rgba(250, 3, 118, 0.966);
+  color: white;
+}  
+
+/* modal_bokeh_3_LargeContent  == Content/Box */
+.modal_CustomSummaryStats_Content {
+  position: fixed;
+  width: 700px; 
+  height: 550px;
+  margin-left: 500px;
+  margin-top: 55px; 
+  /* FOO == without a BACKDROP this Margin-Top is measured from where ??  */
+  overflow-y: auto; /* OK == Vertical SCROLL within CONTENT  */
+  background-color: #fefefe;
+  padding: 0;
+  border: 1px solid #888;
+  /* DHANKAR In the CENTER and WIDTH as % of the SCREEN  */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+/* modal_CategoricalCol_body */
+.modal_CustomSummaryStats_body {
+  padding: 2px 16px;
+  /* max-height: 500px; */
+}
+
+/*No--Close Button for BOKEH MODALS */
+.modal_CustomSummaryStats_footer{
+  padding: 2px 16px;
+  background-color: rgba(199, 5, 70, 0.418);
+  color: white;
+}  
+
+
+
+</style>
+
+
+
+
+<body>
+
+  
+
+  <div id="conditional_Summary_in_ModalPopUp">
+    <div id="myModal" class="modal"> <!-- The Modal -->
+    <div class="modal-content"><!-- Modal content -->
+
+      <div class="modal-header">
+          <span class="close">&times;</span> 
+          <!-- SPAN CLASS for the CLOSE CROSS X -->
+          <h2>Summary Statistics</h2>
+        </div>
+        <div class="modal-body">
+          <p>Tukey's Five Point Summary Statistics</p>
+
+        <script type="text/javascript">
+            var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+        </script>
+        
+        <table id="summary_dataTable" class="display" cellspacing="0" width="100%">
+        </table>
+        
+        <script>
+                var mySummaryUrl = "{% url 'call_modal_data_summary_stats' %}" //call_modal_data_summary_stats
+                var dataSet;
+                var my_Modalcolumns = []; // An EMPTY ARRAY 
+        
+                $(document).ready(function(){
+                    $.ajax({
+                            url: mySummaryUrl,
+                            type: 'GET',      // Other Option - POST 
+                            dataType: 'json', 
+                            success: function(dict_json_from_py) {
+
+                              //console.log(" INITIAL dict_json_from_py ==================== BELOW =============")
+                              //console.log(dict_json_from_py)
+
+                              var dataSet = dict_json_from_py.data_json.columns;
+                              //console.log("VAR dataSet==================== BELOW =============")
+                              //console.log(dataSet)
+                              
+                              
+                              $.each(dataSet, function( key, value ) {
+                                                      var my_item = {};
+                                                      my_item.data = key; 
+                                                      my_item.title = value;
+                                                      my_Modalcolumns.push(my_item); // We PUSH the DICT Into the EMPTY ARRAY 
+                                                      return my_Modalcolumns
+                                              });
+      
+                                assignToEventsColumns(my_Modalcolumns,dict_json_from_py);
+                            }, // Close - success:
+                        })    // Close - "ajax":
+        
+                    function assignToEventsColumns(my_Modalcolumns,dict_json_from_py) {
+                      console.log("======TTS TBD here ====dict_json_from_py.data_json.data==============")
+                      //console.log(dict_json_from_py.data_json.data)
+                      console.log(dict_json_from_py.data_json.data[0])
+                      console.log("======TTS TBD here ================")
+                      console.log(dict_json_from_py.data_json.data[0][0])
+                      console.log(dict_json_from_py.data_json.data[0][8])
+                      console.log(dict_json_from_py.data_json.data[0][9])
+
+
+                            var table = $('#summary_dataTable').DataTable({
+                                "bAutoWidth" : false, //bAutoWidth -- b == BOOLEAN
+                                "serverSide": false, // FALSE - As of NOW gets data from within DOM == clientSide
+                                "select": true, // Column Select done below ...
+                                "aaData": dict_json_from_py.data_json.data, 
+                                "columns" : my_Modalcolumns,
+                             
+                                  //} );
+        
+                              })// FOO Main == Closes -- $('#summary_dataTable').DataTable({
+        
+        
+        // FOO_FART--- Table Header Highlight Code here 
+        
+        // FOO_FART --- Table Header Highlight Code here 
+        
+                            // Below -SO === Original Code--- On Click the - TH - TABLE HEADER 
+                            $("th").on("click", function () {
+                              var column_index = $(this).index();
+                              if ($(this).hasClass("highlighted")) {
+                                  $(this).removeClass("highlighted");
+                                  $("tr").find("td.highlighted").each(function(k, v) {
+                                    console.log("V value");
+                                    console.log(v)
+                                    console.log("K value");
+                                    console.log(k)
+                                    if ($(v).index() == column_index) {
+                                      $(v).removeClass("highlighted");
+                                      console.log("Removed highlight in table cell with value \"" + $(v).text() + "\"");
+                                    }
+                                  });
+                                } else {
+                                  $(this).addClass("highlighted");
+                                  $("tr").find("td").each(function(k, v) {
+                                    if ($(v).index() == column_index) {
+                                      $(v).addClass("highlighted");
+                                      console.log("Added highlight in table cell with value \"" + $(v).text() + "\"");
+                                    }
+                                  });
+                                }
+                                console.log();
+                              });
+
+
+
+                        // var csrftoken = Cookies.get('csrftoken'); // Not used 
+                        // Below OK for Clicking --- Source -- https://datatables.net/reference/api/cell().index()
+        
+                        $('#summary_dataTable tbody').on( 'click', 'td', function () {
+                          alert("FOO_Click")
+                                          var col_num = table.cell( this ).index().columnVisible; // OK works ---we get the COL INDEX of CELL
+                                          
+                                          //table.column(col_num).select(); // NO -- .select(); --- Not FUNC ERROR 
+                                          // ERROR Above -- Uncaught TypeError: table.column(.. .).select is not a function
+                                          //alert('DHANKAR - Clicked on cell in visible column: '+col_num); // OK Dhank
+                                          var col_post_url = "{% url 'summaryStats_getColVal' %}" //
+                                          // TEXT to Speech Starts 
+                                          var name_of_col_1 = dict_json_from_py.data_json.data[0][0]
+                                          var len_of_col_1 = dict_json_from_py.data_json.data[0][8]
+                                          var dType_of_col_1 = dict_json_from_py.data_json.data[0][9]
+
+                                          var summaryStatsTTS = new SpeechSynthesisUtterance(" SUMMARY STATISTICS for COLUMN One " + name_of_col_1 + " , the LENGTH is  " + len_of_col_1 + " RECORDS . ");
+                                          var summaryStatsTTS_1 = new SpeechSynthesisUtterance(" The DATA TYPE of COLUMN One is " + dType_of_col_1 + " , thanks.  ");
+                                          summaryStatsTTS.rate = 0.90; // behaves differently on Firefox and Chrome. 
+                                          summaryStatsTTS_1.rate = 0.90; // 
+                                          //summaryStatsTTS.voice = chosenVoice;
+                                          window.speechSynthesis.speak(summaryStatsTTS);
+                                          window.speechSynthesis.speak(summaryStatsTTS_1);
+                                          // TEXT to Speech ENDS
+
+
+                                          $.ajax({
+                                                  url:col_post_url,
+                                                  type: "POST",
+                                                  dataType: 'json', 
+                                                  data: {
+                                                        col_num: col_num,
+                                                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                                                        },
+                                                  success:function(response){
+                                                      alert("success: " + response);
+                                                  },
+                                                  error:function (xhr, textStatus, thrownError){
+                                                      //alert("failure: " + xhr.statusText);
+                                                  }
+                                                  }).done(function (response) {
+                                                      //alert("end");
+                                                  });
+                              }); // CLOSE-- Click on CELL FUNCTION == .on( 'click', 'td', function ()
+                        
+                          }
+                      }); // Close - // $(document).ready(function(){
+        
+            </script>
+         
+          <br>
+          <a><i id ="hover_CategoricalCols" class="fa font_awesome_icon_for_hover fa-database" ></i> View Categorical Columns </a>
+          
+          
+          <br>
+          <br>
+          <br>
+
+          <p> DataSet Created by :- </p> <code>  USER_NAME </code>
+          <p> DataSet Created at :- </p> <code>  DATE_TIME </code>
+
+        </div>
+        <div class="modal-footer">
+          <h3>Summary Statistics</h3>
+        </div>
+
+    </div> <!-- The Modal -->
+  </div> <!-- ENDS ==  conditional_Summary_in_ModalPopUp -->
+
+
+<!-- Close the MODAL - Summary Starts -->
+<script>
+      var modal = document.getElementById('myModal');
+      var span = document.getElementsByClassName("close")[0];
+      span.onclick = function() {
+        modal.style.display = "none";
+      }
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+</script> 
+<!-- Close the MODAL - Summary Ends   -->
+
+
+
+<script>
+$(document).ready(function() {
+                $('#conditional_Summary_in_ModalPopUp').hide();
+            });
+</script>
+  
+<!-- this below is id="Summary_in_ModalPopUp" for CheckBox this needs to go , replace with HOVER ICON  -->
+
+<script> 
+  var modal = document.getElementById('myModal');
+    $('#Summary_in_ModalPopUp').change(function() {
+      if(this.checked != true){
+          $("#conditional_Summary_in_ModalPopUp").hide();
+          modal.style.display = "none"; 
+          }
+      else{
+          $("#conditional_Summary_in_ModalPopUp").show();
+          modal.style.display = "block"; 
+          }
+          });
+</script>  <!--  Ends == Query Database  -->
+
+
+
+
+
+<!-- FART modal_CategoricalCols STARTS ======= -->
+<!-- == for DRAGGABLE Modals == jQuery.ui.js ====-->
+<script src="/static/vendors/jquery/dhankar_apr19_jQueryUI/jquery-ui.js"></script>
+
+
+<script>
+
+  $("#hover_CategoricalCols").hover(function () {
+    
+    var var_modal_CategoricalCols = document.getElementById('id_modal_CategoricalCols');
+    var_modal_CategoricalCols.style.display = "block"; 
+    // var_myModal2a.style.backdrop = "false"; 
+  });
+
+</script>
+
+<!-- // #### FART = Needs a BACKDROP - OUTERBODY  -->
+<div id="id_modal_CategoricalCols"  class="modal_backDrop_CategoricalCol">
+<div class="modal_CategoricalCol_Content">  
+      <div class="modal_CategoricalCol_Header"> 
+          <h2> Categorical Data Columns </h2> 
+      </div> <!-- ENDS  div == modal_CategoricalCol_Header == -->
+
+      <div class="modal_CategoricalCol_body">
+              <p> Your Data Sets - Categorical only  Cols as below ...  </p>
+              <br>
+
+              <script type="text/javascript">
+                  var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+              </script>
+              
+              <table id="dataTable_CategoricalCols" class="display" cellspacing="0" width="100%">
+              </table>
+              
+              <script>
+                var Url_showCategoricalCols_view = "{% url 'showCategoricalCols_view' %}" //showCategoricalCols_view
+                var dataSet_CategoricalCols
+                var modalCols_CategoricalCols = []; // Init EMPTY_ARRAY 
+        
+                $(document).ready(function(){
+                    $.ajax({
+                            url: Url_showCategoricalCols_view,
+                            type: 'GET',      
+                            dataType: 'json', 
+                            success: function(dict_jsonFromPy_CategoricalCols) {
+                            var dataSet_CategoricalCols = dict_jsonFromPy_CategoricalCols.data_json.columns;
+                            $.each(dataSet_CategoricalCols, function( key, value ) {
+                                                    var dict_forCols = {};
+                                                    dict_forCols.data = key; 
+                                                    dict_forCols.title = value;
+                                                    modalCols_CategoricalCols.push(dict_forCols); 
+                                                    // PUSH the DICT Into EMPTY ARRAY - created to Populate MODAL dataTable Columns
+                                                    return modalCols_CategoricalCols
+                                            }); // Close == $.each(dataSet, function( key, value )
+      
+                                assignToEventsColumns(modalCols_CategoricalCols,dict_jsonFromPy_CategoricalCols);
+                            }, // Close == success: function(dict_jsonFromPy_CategoricalCols)
+                        })    // Close - "ajax":
+        
+                    function assignToEventsColumns(modalCols_CategoricalCols,dict_jsonFromPy_CategoricalCols) {
+
+                    var dataTable_CategoricalCols = $('#dataTable_CategoricalCols').DataTable({
+                      // FART --- this above == var dataTable_CategoricalCols --- Not used anywhere ???
+                      
+                        "bAutoWidth" : false, //bAutoWidth -- b == BOOLEAN
+                        "serverSide": false, // FALSE - As of NOW gets data from within DOM == clientSide
+                        "select": true, // FART == Is this for == Column Select done below ...DELETE THIS ???
+                        "aaData": dict_jsonFromPy_CategoricalCols.data_json.data, 
+                        "columns" : modalCols_CategoricalCols,
+      
+                            }) // CLOSE == $('#dataTable_CategoricalCols').DataTable({
+                        //} // CLOSE == function assignToEventsColumns === FART_ClickAlertFails == to solve for this taken this curly brace DOWN 
+
+
+                        // JS FUNCTION == CLICK EVENT for Choosing the ROWS etc from the DataTable above --- Comes Here ....
+                      
+                        } // CLOSE == function assignToEventsColumns === FOO_without this Curly Brace here the Click_Event_Fails == Got this from Above
+                    }); // CLOSE ==  $(document).ready(function(){
+          </script>
+          
+    </div> <!-- == ENDS == modal_CategoricalCol_body -->
+  </div><!-- == ENDS == modal_CategoricalCol_Content -->
+</div><!-- == ENDS ==modal_backDrop_CategoricalCol ==> 
+  
+
+
+
+  <!== myModal2a == Closing_SCRIPT_starts -->
+
+  <script>
+      var modal2b = document.getElementById('myModal2b');
+      var span2b = document.getElementById('crossCloseMyModal2b');
+      //var span = document.getElementsByClassName("modal_close_SQL_Tables_Merge")[0];
+      span2b.onclick = function() {
+        modal2b.style.display = "none"; // Change MODAL Name here.
+      }
+      window.onclick = function(event) {
+        if (event.target == modal2b) {
+          modal2b.style.display = "none"; // Change MODAL Name here.
+        }
+      }
+</script> <!--  myModal2b == Closing_SCRIPT_ENDs -->
+
+
+<script>
+  // Draggable for - 1st Modal
+  $('.modal_CategoricalCol_Content').draggable({
+      handle: ".modal_CategoricalCol_Header",
+      revert: true  // this REVERTs to Original Position after DRAG // OK for Now 
+  });
+  
+</script> <!--  myModal2b == modal_CategoricalCol_Header -->
+
+
+
+
+
+
+
+
+
+<!-- DONT Change Anything Below here   -->                                        
+</body>
+</html>
