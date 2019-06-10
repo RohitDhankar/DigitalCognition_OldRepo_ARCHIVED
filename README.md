@@ -1,5 +1,6 @@
 
-## Wiki for DigitalCognition - 
+## DigitalCognition - DC is wannabe -1/Looker 2/GoogleRefine 3/CKAN 
+
 #
 For developers , project open / closed issues :- https://github.com/RohitDhankar/DigitalCognition/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aclosed
 #
