@@ -1275,7 +1275,7 @@ input[type="text"] {
                     <h3>Data Analyst</h3>
                     <ul class="nav side-menu">
                         <li><a ><i class="fa fa-laptop"></i> Exploratory Analytics <span class="fa fa-chevron-down"></span></a>
-                        <ul id ="fart_focus" class="nav child_menu">
+                        <ul id ="foo_focus" class="nav child_menu">
         
                                       <li> 
                                           <a href="{% url  'data_ListView'%}">Data Ingress</a> 
@@ -1764,8 +1764,23 @@ input[type="text"] {
                                                                       //console.log(dict_json_from_py)
       
                                                                       var dataSet = dict_json_from_py.data_json.columns;
-                                                                      //console.log("VAR dataSet==================== BELOW =============")
-                                                                      //console.log(dataSet)
+
+                                                                      
+
+                                                                      // console.log("VAR dataSet==================== BELOW =============")
+                                                                      // console.log(dataSet)
+                                                                      
+                                                                      //var dictJsonFromPy = dict_json_from_py.data_json.columns;
+                                                                      var dictJsonFromPy = dict_json_from_py;
+                                                                      localStorage.setItem('myObj2', JSON.stringify(dictJsonFromPy));
+                                                                      var obj2 = JSON.parse(localStorage.getItem('myObj2'));
+
+                                                                      console.log("VAR dictJsonFromPy======= BELOW =============")
+                                                                      console.log(dictJsonFromPy)
+                                                                      
+                                                                      console.log("VAR myObj============ BELOW =============")
+                                                                      console.log(obj2)
+                                                                      
                                                                       
                                                                       
                                                                       $.each(dataSet, function( key, value ) {
@@ -2129,7 +2144,7 @@ input[type="text"] {
                                   </script> <!--  Modal SCRIPT ENDS -->
 
 
-                                <!-- FART_Include here HTML Page == Large Bokeh Vertical Bars and Custom Summary Stats MODAL  -->
+                                <!-- FOO_Include here HTML Page == Large Bokeh Vertical Bars and Custom Summary Stats MODAL  -->
 
                                       
 
