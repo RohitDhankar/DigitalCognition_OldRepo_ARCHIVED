@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load staticfiles %}    
+
+<head>
+</head>
+
+<style>
+/* CSS in dc_customCSS.html == .modal_DropDownMenu_header ..etc etc ... */
+</style>
+
+<body>
+        <div id="checkbox_for_Summary_in_ModalPopUp1" class="custom-control custom-checkbox mb-3"> 
+                <input type="checkbox" class="custom-control-input" id="Summary_in_ModalPopUp1" name="Summary_in_ModalPopUp1">
+                <label class="custom-control-label" for="Summary_in_ModalPopUp1">EDA - Column Actions</label>
+            </div>
+        
+            <div id="conditional_Summary_in_ModalPopUp1">
+              
+                <div id="myModal1" class="modal_DropDownMenu"> <!-- The Modal -->
+                <div class="modal_DropDownMenu_content"><!-- Modal content -->
+
+                  <div class="modal_DropDownMenu_header">
+                      <span class="modal_DropDownMenu_close">&times;</span> 
+                      <!-- SPAN CLASS for the CLOSE CROSS X -->
+                      <h2>Exploratory Data Analysis - On Column Actions </h2>
+                    </div>
+                    <div class="modal-body">
+                        
+
+                    <div id = "checkbox_for_eda_SearchAndReplace"  class="custom-control custom-checkbox mb-3">  <!--  STARTS == EDA_SearchAndReplace -->
+                        <input type="checkbox" class="custom-control-input" id="EDA_SearchAndReplace" name="EDA_SearchAndReplace">
+                        <label class="custom-control-label" for="EDA_SearchAndReplace">Search and Replace</label>
+                    </div>
+                  
+                      <div id="conditional_EDA_SearchAndReplace">
+                          <form action=/dc/eda_actionSearchAndReplace_/ method="post" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <p>
+                                  <label for="eda_new_column">New Column:</label>
+                                    <select id="eda_new_column" name="form_input_new_column">
+
+                                      <option value="new_col">Results in New Col.</option>
+                                      <option value="old_col">Overwrite Chosen Col.</option>
+                                      
+                                    </select>
+                                  <button type="button" style="color:green;" id="choose_button" onclick="eda_newColumn()">Choose</button>
+
+                                  <script>
+                                    document.getElementById('choose_button').onclick = changeColor; 
+                                    
+                                    function changeColor() { 
+                                              document.getElementById('choose_button').style.color = "red";
+                                        }
+                                    </script>
+  
+                                  <script>
+                                    function eda_newColumn() {
+                                        var choose_newColumn = document.getElementById("eda_new_column").value;
+                                        
+                                      }
+                                  </script>
+                              </p>
+
+
+                              <p>
+                                  <label for="eda_operation_type">Choose Operation:</label>
+                                    <select id="eda_operation_type" name="django_form_input_operation_type">
+                                      <option value="equals">Equals(=)</option>
+                                      <option value="contains">Text Contains SubString</option>
+                                      <option value="starts_with">Text Starts With</option>
+                                      <option value="ends_with">Text Ends With</option>
+                                      <option value="regex">REGEX</option>
+                                    </select>
+                                  <button type="button" style="color:green;" id="choose_button1" onclick="eda_operation_type_function()">Choose</button>
+
+                                  <script>
+                                    document.getElementById('choose_button1').onclick = changeColor; 
+                                    function changeColor() { 
+                                              document.getElementById('choose_button1').style.color = "red";
+                                                }
+                                  </script>
+
+
+                                  <script>
+                                    function eda_operation_type_function() {
+                                        //var operation_type = document.getElementById("eda_operation_type").selectedIndex;
+                                        // ABOVE Will Give Numeric INDEX for option.value == 0,1,2,3,4== REGEX
+                                        var operation_type = document.getElementById("eda_operation_type").value;
+                                        console.log(operation_type) 
+                                        alert(operation_type)
+                                        
+                                      }
+                                  </script>
+                              </p>
+
+                              <p>
+                                  <label for="id_str_search">String to Search:</label>
+                                  <input type="text" name="str_search" maxlength="1000" id="id_str_search">
+                              </p>
+                              <p>
+                                  <label for="id_str_replace">String to Replace:</label>
+                                  <input type="text" name="str_replace" maxlength="1000" id="id_str_replace">
+                              </p>
+                            <button type="submit">Submit</button>
+                            </form>  <!-- /.form --> 
+                        </div> <!-- conditional_EDA_SearchAndReplace -->
+
+                          <script>
+                            $(document).ready(function() {
+                                            $('#conditional_EDA_SearchAndReplace').hide();
+                                        });
+                          </script>
+                          <script>
+                              $('#EDA_SearchAndReplace').change(function() {
+                                if(this.checked != true){
+                                    $("#conditional_EDA_SearchAndReplace").hide();
+                                    $("#checkbox_for_eda_MatchSimilarText").show(); // SHOW - CHECKBOX for -- MatchSimilarText
+                                    }
+                                else{
+                                    $("#conditional_EDA_SearchAndReplace").show(); // SHOW - Search and Replace
+                                    $("#checkbox_for_eda_MatchSimilarText").hide(); // HIDE - CHECKBOX for -- MatchSimilarText
+                                    document.getElementById("#conditional_EDA_SearchAndReplace").style.color = "red";
+                                    }
+                                    });
+                          </script> <!--  ENDs == EDA_SearchAndReplace -->
+
+
+                      <!--  STARTS == eda_MatchSimilarText -->
+                    <div id ="checkbox_for_eda_MatchSimilarText" class="custom-control custom-checkbox mb-3">  <!--  STARTS == eda_MatchSimilarText -->
+                    <input type="checkbox" class="custom-control-input" id="eda_MatchSimilarText" name="eda_MatchSimilarText">
+                    <label class="custom-control-label" for="eda_MatchSimilarText">Match Similar Text</label>
+                    </div>
+                
+                    <div id="conditional_eda_MatchSimilarText">
+                        <form action=/dc/eda_actionMatchSimilarText_/ method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <p>
+                                <label for="id_fuzziness">Fuzziness:</label>
+                                <input type="text" name="fuzziness" maxlength="1000" id="id_fuzziness">
+                            </p>
+                            
+                            <p>
+                                <label for="id_str_to_compare_with">String to Compare:</label>
+                                <input type="text" name="str_to_compare_with" maxlength="1000" id="id_str_to_compare_with">
+                            </p>
+                          <button type="submit">Submit</button>
+                          </form>  <!-- /.form --> 
+                    </div> <!-- conditional_eda_MatchSimilarText -->
+
+                        <script>
+                          $(document).ready(function() {
+                                          $('#conditional_eda_MatchSimilarText').hide();
+                                      });
+                        </script>
+                        <script>
+                            $('#eda_MatchSimilarText').change(function() {
+                              if(this.checked != true){
+                                  $("#conditional_eda_MatchSimilarText").hide();
+                                  $("#checkbox_for_eda_SearchAndReplace").show();
+                                  }
+                              else{
+                                  $("#conditional_eda_MatchSimilarText").show();
+                                  $("#checkbox_for_eda_SearchAndReplace").hide();
+                                  document.getElementById("#conditional_eda_MatchSimilarText").style.color = "red";
+                                  }
+                                  });
+                        </script> <!--  ENDs == eda_MatchSimilarText -->
+
+                    </div>
+                    <div class="modal_DropDownMenu_footer">
+                      <h3> EDA - On Column Actions  </h3>
+                    </div>
+            </div> <!-- The Modal -->
+            </div> <!-- ENDS ==  conditional_Summary_in_ModalPopUp -->
+
+
+
+          <script>
+                  // Get the modal
+                  var myModal1 = document.getElementById('myModal1');
+                  // Get the <span> element that closes the modal
+                  var myModal1span = document.getElementsByClassName("modal_DropDownMenu_close")[0];
+                  // When the user clicks on <span> (x), close the modal
+                    myModal1span.onclick = function() {
+                    myModal1.style.display = "none";
+                    //$('.checkbox_for_Summary_in_ModalPopUp1').prop('checked', false);
+                    //Summary_in_ModalPopUp1
+                    //$('.Summary_in_ModalPopUp1').prop('checked', false);
+                    //$('.checkbox_for_Summary_in_ModalPopUp1')[0].checked = false;
+                    $('.Summary_in_ModalPopUp1').prop('checked', false);
+                    $('.checkbox_for_Summary_in_ModalPopUp1').prop('checked', false);
+                      
+                  }
+                  // When the user clicks anywhere outside of the modal, close it
+                  window.onclick = function(event) {
+                    if (event.target == myModal1) {
+                      myModal1.style.display = "none";
+                      $('.Summary_in_ModalPopUp1').prop('checked', false);
+                      $('.checkbox_for_Summary_in_ModalPopUp1').prop('checked', false);
+                      //$('.checkbox_for_Summary_in_ModalPopUp1')[0].checked = false;
+                      
+                    }
+                  }
+          </script> <!--  Modal SCRIPT ENDS -->
+
+            <script>
+            $(document).ready(function() {
+                            $('#conditional_Summary_in_ModalPopUp1').hide();
+                        });
+            </script>
+              
+            <script>
+              var modal1 = document.getElementById('myModal1');
+
+                $('#Summary_in_ModalPopUp1').change(function() {
+                  if(this.checked != true){
+                      $("#conditional_Summary_in_ModalPopUp1").hide();
+                      modal1.style.display = "none"; 
+                      }
+                  else{
+                      $("#conditional_Summary_in_ModalPopUp1").show();
+                      modal1.style.display = "block"; 
+                      //$("body").css("overflow","hidden"); // Make Entire PAGE Unscrollable
+                      //$('html, body').css({ overflow: 'hidden', height: '100%' });
+                      }
+                      });
+            </script> 
+
+
+</body>
+</html>
