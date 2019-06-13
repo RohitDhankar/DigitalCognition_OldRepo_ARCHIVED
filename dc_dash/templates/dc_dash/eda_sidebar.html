@@ -1181,6 +1181,33 @@ input[type="text"] {
 
         
 <head>
+
+    <script>
+        var send_dfToJSON_forBokehUrl = "{% url 'call_send_dfToJSON_forBokeh' %}" //call_send_dfToJSON_forBokeh
+
+        //$(document).ready(function(){
+          //$(function(){
+                      $.ajax({
+                              url: send_dfToJSON_forBokehUrl,
+                              type: 'GET',      
+                              dataType: 'json', 
+                              success: function(dict_json_forBokehPlots) {
+                                      var dictJsonFromPy = dict_json_forBokehPlots;
+                                      // console.log("VAR dictJsonFromPy======= BELOW =============")
+                                      // console.log(dictJsonFromPy) // OK 
+                                      
+                                      localStorage.setItem('myObj_bokeh', JSON.stringify(dictJsonFromPy));
+                                      var myObj_bokeh = JSON.parse(localStorage.getItem('myObj_bokeh'));
+                                      console.log("VAR myObj_bokeh============ BELOW ===========")
+                                      alert("=myObj_bokeh==1====")
+                                      console.log(myObj_bokeh)
+                                    }, // Close - success:
+                          })    // Close - "ajax":
+            //}); // Close - // $(document).ready(function(){
+  </script>
+
+
+
         
           <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133322875-1"></script>
@@ -1300,31 +1327,18 @@ input[type="text"] {
                                       
 
                                       </li> <!--  Ends == includes === ENDS LI TAG  == Summary_in_ModalPopUp -->
-
-          
                                       
-                                      <script>
-                                              var send_dfToJSON_forBokehUrl = "{% url 'call_send_dfToJSON_forBokeh' %}" //call_send_dfToJSON_forBokeh
-                                     
-                                              $(document).ready(function(){
-                                                
-                                                  $.ajax({
-                                                          url: send_dfToJSON_forBokehUrl,
-                                                          type: 'GET',      
-                                                          dataType: 'json', 
-                                                          success: function(dict_json_forBokehPlots) {
-                                                                  var dictJsonFromPy = dict_json_forBokehPlots;
-                                                                  // console.log("VAR dictJsonFromPy======= BELOW =============")
-                                                                  // console.log(dictJsonFromPy) // OK 
-                                                                  
-                                                                  localStorage.setItem('myObj_bokeh', JSON.stringify(dictJsonFromPy));
-                                                                  var myObj_bokeh = JSON.parse(localStorage.getItem('myObj_bokeh'));
-                                                                  console.log("VAR myObj_bokeh============ BELOW ===========")
-                                                                  console.log(myObj_bokeh)
-                                                                }, // Close - success:
-                                                      })    // Close - "ajax":
-                                                  }); // Close - // $(document).ready(function(){
-                                        </script>
+                                      
+
+                                        <script>
+                                              var myObj_bokeh = JSON.parse(localStorage.getItem('myObj_bokeh'));
+                                                                                                            
+                                              // console.log("VAR myObj_bokeh==FOO==AAAAAAAA======== BELOW ===========")
+                                              // alert("=myObj_bokeh==2====")
+                                              // console.log(myObj_bokeh)
+
+                                          </script>
+                                          
 
 
                                         
@@ -2042,8 +2056,13 @@ input[type="text"] {
                                     <script>
                                         var modal2b = document.getElementById('myModal2b');
                                         var span2b = document.getElementById('crossCloseMyModal2b');
+                                        alert(span2b)
+                                        console.log("---------------------here it is == span2b---------------")
+                                        console.log(span2b)
+                                        // FOO_ERROR - 
                                         //var span = document.getElementsByClassName("modal_close_SQL_Tables_Merge")[0];
                                         span2b.onclick = function() {
+                                          alert("---crossCloseMyModal2b--span2b--CROSS CLICKED-")
                                           modal2b.style.display = "none"; // Change MODAL Name here.
                                         }
                                         window.onclick = function(event) {
