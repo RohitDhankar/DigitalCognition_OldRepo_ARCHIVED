@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+
+</style>
+    
+<head>
+<meta charset="UTF-8">
+<title> Digital Cognition - CodeMirror_Test_1 </title>
+<link href="/static/CodeMirror_DC_June19/lib/codemirror.css" rel="stylesheet">
+<link href="/static/CodeMirror_DC_June19/theme/abcdef.css" rel="stylesheet">
+
+<script src="/static/CodeMirror_DC_June19/lib/codemirror.js"></script>
+<script src="/static/CodeMirror_DC_June19/mode/sql/sql.js"></script>
+<script src="/static/CodeMirror_DC_June19/addon/hint/sql-hint.js"></script>
+
+<!-- JS includes for dataTable  -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+
+
+</head>
+
+<body>
+    <textarea name="" id="id_textArea_CodeMirror" > SELECT * FROM dc_codemirror;  </textarea>
+    <div class="row text-center">
+            <br>
+            <button type="button" class="btn btn-primary" id="clear_editor">Clear Editor </button>
+    </div>
+
+    <script>
+        var var_textArea = CodeMirror.fromTextArea(document.getElementById('id_textArea_CodeMirror'),
+        {
+            mode:"sql",
+            styleActiveLine: true,
+            theme:"abcdef",
+            lineNumbers:true
+        } // Close - OBJECT == Modes etc ..
+        ); // Close - METHOD == .fromTextArea
+        console.log("------AAAAAAA------var_textArea")
+        console.log(var_textArea)
+        var codeValue = var_textArea.doc.getValue();
+        console.log("------BBBBBB------codeValue")
+        console.log(codeValue)
+
+        //var_textArea.on("change", function(cm,event) {
+            var_textArea.on("change", function() {
+                // console.log("------CCCCCC----Logs each Letter of the STR--codeValue1-------")
+                // console.log($('#editor').val($.trim(cm.getValue()))); // FOO --- How does this #editor Work here ?? 
+                var codeValue1 = var_textArea.getValue();
+                if (typeof codeValue1 !== 'undefined' && codeValue1.length > 12 ) // OPTION -1 
+                //if($('var_textArea').val().trim().length > 12 ) // ERROR == Uncaught TypeError: Cannot read property 'trim' of undefined
+                            {
+                            console.log("------CCCCCC------codeValue1")
+                            console.log(codeValue1)
+                            alert(codeValue1)
+                            }
+            });
+
+
+    // Clear editor's code
+var clr_button_clicked = document.getElementById('clear_editor');
+clr_button_clicked.onclick = function() {
+
+  var_textArea.setValue("");
+  var_textArea.focus();
+};
+</script>
+
+</body>
+</html>
