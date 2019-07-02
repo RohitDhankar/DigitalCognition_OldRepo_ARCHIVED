@@ -15,11 +15,20 @@
 <script src="/static/CodeMirror_DC_June19/mode/sql/sql.js"></script>
 <script src="/static/CodeMirror_DC_June19/addon/hint/sql-hint.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+
+<!-- https://github.com/zeroturnaround/sql-formatter -->
+<script type="text/javascript" src="https://unpkg.com/sql-formatter@latest/dist/sql-formatter.min.js"></script>
+
+<!-- FOO _ CHECK TBD  -->
+<!-- Generally, I like the way phpMyAdmin tweaked Codemirror. I think I will dig deeper in how they did it... -->
+<!-- https://bitbucket.org/phpliteadmin/public/issues/313/sql-syntax-highlighting -->
+
 </head>
+
+
 
 <body>
     <textarea name="" id="id_textArea_CodeMirror" > SELECT * FROM dc_codemirror;  </textarea>
@@ -33,10 +42,14 @@
     <script>
         var var_textArea = CodeMirror.fromTextArea(document.getElementById('id_textArea_CodeMirror'),
         {
-            mode:"sql",
+            //mode:"sql",
+            mode:"text/x-sql",
             styleActiveLine: true,
             theme:"abcdef",
-            lineNumbers:true
+            lineNumbers:true,
+
+            gutters: ["CodeMirror-lint-markers","CodeMirror-linenumbers", "breakpoints"], // FOO - Read Further ?? 
+            lint: true // Where is the SQL Linting JS Code ?? Its Not in == /our_static/CodeMirror_DC_June19/addon/lint
         } // Close - OBJECT == Modes etc ..
         ); // Close - METHOD == .fromTextArea
         console.log("--HardCoded/PlaceHolder---var_textArea",var_textArea)
@@ -48,7 +61,11 @@
         // https://codemirror.net/doc/upgrade_v3.html#events
 
         $('#cm_editor_submit').on("click",function() {
-                var codeValue1 = var_textArea.getValue();
+                var codeValue1 = var_textArea.getValue('new_line_foo'); // TESTING == 'new_line_foo'
+                // ABOVE HERE --->>  the .getValue() default param == '\n' , means that whenever user submits a STRING in Next line 
+                // Get Value shall return that STRING to us in a NEXT LINE - further processing maybe a Challenge. 
+                // IF we use a NON SQL - RARELY used as table_name CHAR STRING - we can easily SPLIT on that and treat as NEW LINE 
+
                 // OPTION -1 == Dirty hacks 
                 if (typeof codeValue1 !== 'undefined' && codeValue1.length > 3 ) 
                             {
@@ -73,4 +90,7 @@
     </script>
 
 </body>
+
+
+
 </html>
