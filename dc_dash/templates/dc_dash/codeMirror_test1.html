@@ -19,7 +19,6 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-
 </head>
 
 <body>
@@ -27,6 +26,8 @@
     <div class="row text-center">
             <br>
             <button type="button" class="btn btn-primary" id="clear_editor">Clear Editor </button>
+            <br>
+            <button type="button" class="btn btn-primary" id="cm_editor_submit">Submit SQL Query </button>
     </div>
 
     <script>
@@ -42,29 +43,34 @@
         var codeValue = var_textArea.doc.getValue();
         console.log("--HardCoded/PlaceHolder---codeValue",codeValue)
 
-        var_textArea.on("change", function() {
-                // https://codemirror.net/doc/upgrade_v3.html#events
-                
-                var codeValue1 = var_textArea.getValue();
-                // OPTION -1 == Dirty hack 
+        //var_textArea.on("change", function() { 
+        // FOO -- DHANKAR --- Above Not Ok gets each CHARACTER input , we need entire TextArea - better to have user Click a SUBMIT Button
+        // https://codemirror.net/doc/upgrade_v3.html#events
 
-                if (typeof codeValue1 !== 'undefined' && codeValue1.length > 12 ) 
-                
+        $('#cm_editor_submit').on("click",function() {
+                var codeValue1 = var_textArea.getValue();
+                // OPTION -1 == Dirty hacks 
+                if (typeof codeValue1 !== 'undefined' && codeValue1.length > 3 ) 
                             {
                             console.log("---UserEntered_Updated-----codeValue1",codeValue1)
+                            var cm_line = var_textArea.doc.getLine(1);
+                            if (typeof cm_line !== 'undefined')
+                                        {
+                                            console.log("--===========---cm_line-----",cm_line)
+                                        } 
                             }
-                // OPTION -2 == ??
+                // OPTION -2 == FOO == To be Done 
             });
 
 
     // Clear editor's code
-var clr_button_clicked = document.getElementById('clear_editor');
-clr_button_clicked.onclick = function() {
+    var clr_button_clicked = document.getElementById('clear_editor');
+    clr_button_clicked.onclick = function() {
 
-  var_textArea.setValue("");
-  var_textArea.focus();
-};
-</script>
+    var_textArea.setValue("");
+    var_textArea.focus();
+    };
+    </script>
 
 </body>
 </html>
