@@ -1,36 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<style>
-
-</style>
+<style> </style>
     
 <head>
 <meta charset="UTF-8">
 <title> Digital Cognition - CodeMirror_Test_1 </title>
 <link href="/static/CodeMirror_DC_June19/lib/codemirror.css" rel="stylesheet">
 <link href="/static/CodeMirror_DC_June19/theme/abcdef.css" rel="stylesheet">
-
-<script src="/static/CodeMirror_DC_June19/lib/codemirror.js"></script>
-<script src="/static/CodeMirror_DC_June19/mode/sql/sql.js"></script>
-<script src="/static/CodeMirror_DC_June19/addon/hint/sql-hint.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-
-
-<!-- https://github.com/zeroturnaround/sql-formatter -->
-<script type="text/javascript" src="https://unpkg.com/sql-formatter@latest/dist/sql-formatter.min.js"></script>
-
 <!-- FOO _ CHECK TBD  -->
 <!-- Generally, I like the way phpMyAdmin tweaked Codemirror. I think I will dig deeper in how they did it... -->
 <!-- https://bitbucket.org/phpliteadmin/public/issues/313/sql-syntax-highlighting -->
-
 </head>
 
-
-
 <body>
+        <script src="/static/CodeMirror_DC_June19/lib/codemirror.js"></script>
+        <script src="/static/CodeMirror_DC_June19/mode/sql/sql.js"></script>
+        <!-- Read through code of files == sql-hint.js and show-hint.js  -->
+        <script src="/static/CodeMirror_DC_June19/addon/hint/show-hint.js"></script>
+        <script src="/static/CodeMirror_DC_June19/addon/hint/sql-hint.js"></script>
+        <script src="/static/CodeMirror_DC_June19/addon/edit/matchbrackets.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <!-- https://github.com/zeroturnaround/sql-formatter -->
+        <script type="text/javascript" src="https://unpkg.com/sql-formatter@latest/dist/sql-formatter.min.js"></script>
+
     <textarea name="" id="id_textArea_CodeMirror" > SELECT * FROM dc_codemirror;  </textarea>
     <div class="row text-center">
             <br>
@@ -43,13 +37,45 @@
         var var_textArea = CodeMirror.fromTextArea(document.getElementById('id_textArea_CodeMirror'),
         {
             //mode:"sql",
-            mode:"text/x-sql",
+            mode:'text/x-sql',
+            //mode:'text/x-mysql',
             styleActiveLine: true,
             theme:"abcdef",
             lineNumbers:true,
+            autoCloseTags: true,
+            matchBrackets: true,
+            indentWithTabs: true,
+            smartIndent: true,
 
-            gutters: ["CodeMirror-lint-markers","CodeMirror-linenumbers", "breakpoints"], // FOO - Read Further ?? 
-            lint: true // Where is the SQL Linting JS Code ?? Its Not in == /our_static/CodeMirror_DC_June19/addon/lint
+            //gutters: ["CodeMirror-lint-markers","CodeMirror-linenumbers", "breakpoints"], // FOO - Read Further ?? 
+            gutters: ["CodeMirror-lint-markers"], 
+            //  Source == https://ashmind.github.io/codemirror-addon-lint-fix/docs/demo.html
+            lint: true,
+
+            // FOO--  ERROR --- Where is the SQL Linting JS Code ?? Its Not in == /our_static/CodeMirror_DC_June19/addon/lint
+
+            hint: CodeMirror.hint.sql, 
+            // FOO -- needs testing 
+            // FOO --- Issues here -== https://stackoverflow.com/questions/20023381/codemirror-how-add-tables-to-sql-hint/20133838#20133838
+
+            hintOptions: {
+              tables: {
+                  table1: [ 'col_A', 'col_B', 'col_C' ],
+                  table2: [ 'other_columns1', 'other_columns2' ]
+                        }
+                    },
+
+            extraKeys: {'Ctrl-Space': 'autocomplete'}, // FOO_OK 
+
+                            //extraKeys: {
+                                // "'>'": function (cm) { cm.closeTag(cm, '>'); },
+                                // "'/'": function (cm) { cm.closeTag(cm, '/'); },
+                                // "' '": function (cm) { CodeMirror.xmlHint(cm, ' '); },
+                                // "'<'": function (cm) { CodeMirror.xmlHint(cm, '<'); },
+                                //"Ctrl-Space": function (cm) { CodeMirror.sql-hint.hintSql(cm, ''); }
+                                //"Ctrl-Space": function (cm) { sql-hint.hintSql(cm, ''); }
+                            //}
+
         } // Close - OBJECT == Modes etc ..
         ); // Close - METHOD == .fromTextArea
         console.log("--HardCoded/PlaceHolder---var_textArea",var_textArea)
@@ -88,9 +114,5 @@
     var_textArea.focus();
     };
     </script>
-
 </body>
-
-
-
 </html>
