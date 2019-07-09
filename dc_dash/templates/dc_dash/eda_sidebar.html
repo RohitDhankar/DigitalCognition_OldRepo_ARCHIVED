@@ -230,6 +230,69 @@ input[type="text"] {
               </li> <!--  ENDS LI TAG  ==  EDA - Column Actions == Summary_in_ModalPopUp -->
             
 
+
+
+
+
+
+
+
+
+
+              <li> <!--  STARTS LI TAG == Modal_Query_PSQL_Tables -->
+
+                  <!-- FOO_TBD need a MODAL HERE with FORM in the MODAL  -->
+                      <a><i id ="id_psql_CentOS" class="fa font_awesome_centos_icon_for_hover fa-file"></i> Ping PSQL_CentOS </a>
+                      {% csrf_token %}
+                                                    
+                      <script>
+                          $("#id_psql_CentOS").hover(function () {
+                            var fontawesome_centos_icon = document.getElementsByClassName("font_awesome_centos_icon_for_hover")[0];
+                            fontawesome_centos_icon.setAttribute("style", "color:  rgb(230, 180, 19); "); 
+                            //$("#conditional_part_csv_to_psql").show();
+                          });
+                      </script>
+
+                      <script>
+                          $("#id_psql_CentOS").hover(function () {
+                            var url_psql_CentOS = "{% url 'call_modal_psql_CentOS' %}" //
+                            hover_status = 1; 
+                            //
+                            $.ajax({
+                                    url:url_psql_CentOS,
+                                    type: "POST",
+                                    dataType: 'json', 
+                                    data: {
+                                          hover_status: hover_status,
+                                          csrfmiddlewaretoken: '{{ csrf_token }}'
+                                          },
+                                    }); // Close == AJAX
+                          }); // CLOSE == $("#id_psql_CentOS").hover(function ()
+                      </script>
+
+                  
+              </li>
+      
+
+
+
+
+              
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       <li> <!--  STARTS LI TAG == Modal_Query_PSQL_Tables -->
                 <div id = "active_div1" class="custom-control custom-checkbox mb-3"> 
                   <input type="checkbox" class="custom-control-input" id="Modal_Query_PSQL_Tables" name="Modal_Query_PSQL_Tables">

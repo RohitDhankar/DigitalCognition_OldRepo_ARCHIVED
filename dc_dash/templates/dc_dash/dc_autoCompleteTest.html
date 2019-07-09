@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DC_AutoComplete_SQL_Tables_for_CodweMirror</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <script>
+        var call_pyTo_codeMirror = "{% url 'call_pyTo_codeMirror' %}" 
+        var array_tables1 = [];
+    
+        $(document).ready(function(){
+                      $.ajax({
+                              url: call_pyTo_codeMirror,
+                              type: 'GET',      
+                              dataType: 'json', 
+                              success: function(dict_json_forCodeMirror) {
+                                      array_tables1 = dict_json_forCodeMirror.tables
+                                    //   console.log("==== Array_tables === BELOW =============")
+                                    //   console.log(array_tables1)
+
+                                      $( function() {
+                                            var availableTags = array_tables1;
+                                                $( "#tags" ).autocomplete({
+                                                source: availableTags
+                                                });
+                                            } );
+  
+                                    //FOO_TBD ---localStorage.setItem('myObj_bokeh', JSON.stringify(dictJsonFromPy));
+                                    //   var myObj_bokeh = JSON.parse(localStorage.getItem('myObj_bokeh'));
+                                    //   console.log("VAR myObj_bokeh============ BELOW ===========")
+                                    //   alert("=myObj_bokeh==1====")
+                                    //   console.log(myObj_bokeh)
+
+                                }, // Close - success:
+                             })    // Close - "ajax":
+                        }); // Close - // $(document).ready(function(){
+
+    </script>
+
+  
+</head>
+<body>
+ 
+<div class="ui-widget">
+
+  <label for="tags">SQL Table Names: </label>
+  <input id="tags">
+</div>
+ 
+ 
+</body>
+</html>
