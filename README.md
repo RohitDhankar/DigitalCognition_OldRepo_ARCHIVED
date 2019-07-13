@@ -16,3 +16,14 @@ For developers , the project Wiki :- https://github.com/RohitDhankar/DigitalCogn
 #
 Product preview here :- https://www.youtube.com/channel/UC9J9N9CNv15s9U9Aejpza6g/videos
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133322875-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'UA-133322875-1');
+        </script>
+        
+
