@@ -1,3 +1,5 @@
+# CODE MOVED HERE - https://github.com/digital-cognition-co-in/DigitalCognition
+
 
 DC is being developed to be a generic BI tool. 
 Product preview here :- https://www.youtube.com/channel/UC9J9N9CNv15s9U9Aejpza6g/videos
